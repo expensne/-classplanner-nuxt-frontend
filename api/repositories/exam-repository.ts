@@ -1,6 +1,6 @@
 import FetchFactory from "../fetch-factory";
 
-export class ExamsRepository extends FetchFactory {
+export default class ExamsRepository extends FetchFactory {
     private ENDPOINT = "/exams";
 
     async getExams(): Promise<Exam[]> {

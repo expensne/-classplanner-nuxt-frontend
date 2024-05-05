@@ -1,11 +1,12 @@
 <script setup lang="ts">
-const { $api } = useNuxtApp();
+const { state: studentState, fetchStudents, updateStudent } = useStudent();
+const { state: examState, fetchExams } = useExam();
 
-const students = await $api.students.getStudents();
-const exams = await $api.exams.getExams();
+await fetchStudents();
+await fetchExams();
 
 async function onStudentChanged(student: Student) {
-    await $api.students.updateStudent(student);
+    await updateStudent(student);
 }
 </script>
 
@@ -13,8 +14,8 @@ async function onStudentChanged(student: Student) {
     <v-container class="ma-0">
         <v-sheet>
             <OverviewTableWrapper
-                :students="students"
-                :exams="exams"
+                :students="studentState.studentsList"
+                :exams="examState.examsList"
                 @student-changed="(student) => onStudentChanged(student)"
             />
         </v-sheet>

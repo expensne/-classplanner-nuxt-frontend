@@ -1,8 +1,6 @@
-import type { AsyncDataOptions } from "#app";
-
 import FetchFactory from "../fetch-factory";
 
-export class StudentsRepository extends FetchFactory {
+export default class StudentsRepository extends FetchFactory {
     private ENDPOINT = "/students";
 
     async getStudents(): Promise<Student[]> {

@@ -1,8 +1,8 @@
 import type { FetchOptions } from "ofetch";
-import { ExamsRepository } from "~/repositories/impl/exam-repository";
-import { StudentsRepository } from "~/repositories/impl/student-repository";
+import ExamsRepository from "~/api/repositories/exam-repository";
+import StudentsRepository from "~/api/repositories/student-repository";
 
-export interface ApiInstance {
+export interface Respository {
     students: StudentsRepository;
     exams: ExamsRepository;
 }
@@ -14,14 +14,14 @@ export default defineNuxtPlugin((nuxtApp) => {
     const fetchOptions: FetchOptions = { baseURL };
     const apiFetcher = $fetch.create(fetchOptions);
 
-    const modules: ApiInstance = {
+    const repository: Respository = {
         students: new StudentsRepository(apiFetcher),
         exams: new ExamsRepository(apiFetcher),
     };
 
     return {
         provide: {
-            api: modules,
+            repository,
         },
     };
 });

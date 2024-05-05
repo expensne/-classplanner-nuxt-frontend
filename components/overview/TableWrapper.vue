@@ -25,13 +25,13 @@ const studentCols: StudentTableCol[] = [
         id: "lastName",
         align: "left",
         label: "Last Name",
-        field: (row: StudentTableRow) => row.lastName,
+        field: (stud: StudentTableRow) => stud.lastName,
     },
     {
         id: "firstName",
         align: "left",
         label: "First Name",
-        field: (row: StudentTableRow) => row.firstName,
+        field: (stud: StudentTableRow) => stud.firstName,
     },
 ];
 
