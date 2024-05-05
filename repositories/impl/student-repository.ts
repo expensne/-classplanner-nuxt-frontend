@@ -5,17 +5,6 @@ import FetchFactory from "../fetch-factory";
 export class StudentsRepository extends FetchFactory {
     private ENDPOINT = "/students";
 
-    // TODO: remove if not needed
-    async getStudentsReactive(options?: AsyncDataOptions<Student[]>) {
-        return useAsyncData(() => {
-            return this.call(
-                "GET",
-                this.ENDPOINT,
-                undefined // body
-            );
-        }, options);
-    }
-
     async getStudents(): Promise<Student[]> {
         return this.call(
             "GET",
