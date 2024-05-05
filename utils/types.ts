@@ -34,19 +34,23 @@ export type StudentTableRow = {
     scores: Record<string, number | null>;
 };
 
-export interface StudentTableCol {
+export interface StudentTableColumn {
     id: string;
     align: string;
     label: string;
-    field: (row: StudentTableRow) => string;
+    fieldFn: (row: Student) => string;
 }
 
-export interface ExamTableCol {
+export interface ExamTableColumns {
     id: string;
     align: string;
     label: string;
-    field: (row: StudentTableRow) => number | null;
-    minValue: number;
-    maxValue: number;
-    gradingScale: GradingScale;
+    fieldFn: (row: Student) => Score;
+    exam: Exam;
+}
+
+export interface GradeStyle {
+    label: string;
+    color: string;
+    hexColor: string;
 }

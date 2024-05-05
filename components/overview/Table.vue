@@ -1,16 +1,23 @@
 <script setup lang="ts">
+import type { ExamTableColumns, Student } from "~/utils/types";
+
 const props = defineProps<{
-    studentColumns: StudentTableCol[];
-    examColumns: ExamTableCol[];
-    studentRows: StudentTableRow[];
+    studentColumns: StudentTableColumn[];
+    examColumns: ExamTableColumns[];
+    students: Student[];
 }>();
 
 const emit = defineEmits<{
-    pointsScoredChanged: [studentId: string, examId: string, pointsScored: number | null];
+    studentChanged: [student: Student];
 }>();
 
-function onPointsScoreChanged(studentId: string, examId: string, newPoints: number | null) {
-    emit("pointsScoredChanged", studentId, examId, newPoints);
+function onStudentScoreChanged(score: Score, studentId: string, examId: string) {
+    const student = props.students.find((student) => student.id === studentId);
+    if (!student) {
+        return;
+    }
+    student.scores[examId] = score;
+    emit("studentChanged", student);
 }
 </script>
 
@@ -27,24 +34,24 @@ function onPointsScoreChanged(studentId: string, examId: string, newPoints: numb
             </tr>
         </thead>
         <tbody>
-            <tr v-for="row in props.studentRows" :key="row.id">
+            <tr v-for="stud in props.students" :key="stud.id">
                 <td
-                    v-for="column in props.studentColumns"
-                    :key="column.id"
-                    :class="`text-` + column.align + ` font-weight-bold`"
+                    v-for="studCol in props.studentColumns"
+                    :key="studCol.id"
+                    :class="`text-` + studCol.align + ` font-weight-bold`"
                     :style="`background-color: #f5f5f5;`"
                 >
-                    {{ column.field(row) }}
+                    {{ studCol.fieldFn(stud) }}
                 </td>
 
                 <OverviewTableCell
-                    v-for="column in props.examColumns"
-                    :key="column.id"
-                    :pointsScored="column.field(row)"
+                    v-for="examCol in props.examColumns"
+                    :key="examCol.id"
+                    :score="examCol.fieldFn(stud)"
                     :min-points="0"
-                    :max-points="column.maxValue"
-                    :grading-scale="column.gradingScale"
-                    @points-scored-changed="(newVal) => onPointsScoreChanged(row.id, column.id, newVal)"
+                    :max-points="examCol.exam.maxPoints"
+                    :grading-scale="examCol.exam.gradingScale"
+                    @score-changed="(score) => onStudentScoreChanged(score, stud.id, examCol.id)"
                 />
             </tr>
         </tbody>
