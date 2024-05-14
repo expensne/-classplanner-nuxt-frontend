@@ -1,3 +1,7 @@
+export const OVERVIEW_ICON = "mdi-book";
+export const STUDENT_ICON = "mdi-account-school";
+export const EXAM_ICON = "mdi-clipboard-check-outline";
+
 export const GRADE_STYLES: Record<string, GradeStyle> = {
     A: { label: "1", color: "green", hexColor: "#4caf50" },
     B: { label: "2", color: "light-green", hexColor: "#8bc34a" },

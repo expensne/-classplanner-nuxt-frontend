@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { GRADE_STYLES } from "~/constants";
-
 const props = defineProps<{
     score: Score;
     minPoints: number;
@@ -8,20 +6,13 @@ const props = defineProps<{
     gradingScale: GradingScale;
 }>();
 
-const scoreRef = ref(props.score);
-
+const score = ref(props.score);
 const emit = defineEmits<{ scoreChanged: [score: Score] }>();
-
-const grade = computed(() => computeGrade(scoreRef.value.pointsScored, props.maxPoints, props.gradingScale));
-const gradeStyle = computed(() => (grade.value ? GRADE_STYLES[grade.value] : null));
-
-watch(scoreRef.value, (newScore) => {
-    emit("scoreChanged", newScore);
-});
+watch(score, () => emit("scoreChanged", score.value), { deep: true });
 
 function handlePointsChanged(e: Event) {
     const target = e.target as HTMLInputElement;
-    scoreRef.value.pointsScored = parsePointsScored(target.value);
+    score.value.pointsScored = parsePointsScored(target.value);
 }
 
 function parsePointsScored(points: string): number | null {
@@ -42,13 +33,13 @@ function parsePointsScored(points: string): number | null {
             <input
                 type="number"
                 class="pa-0 ma-0 cellInput"
-                :value="scoreRef.pointsScored"
+                :value="score.pointsScored"
                 :min="$props.minPoints"
                 :max="$props.maxPoints"
                 @input="handlePointsChanged"
             />
             <OverviewTableCellGrade
-                :points="scoreRef.pointsScored"
+                :points="score.pointsScored"
                 :minPoints="props.minPoints"
                 :maxPoints="props.maxPoints"
                 :gradingScale="props.gradingScale"

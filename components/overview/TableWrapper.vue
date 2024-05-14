@@ -10,37 +10,43 @@ function onStudentChanged(student: Student) {
     emit("studentChanged", student);
 }
 
-const studentColumns: StudentTableColumn[] = [
-    {
-        id: "lastName",
-        align: "left",
-        label: "Last Name",
-        fieldFn: (stud) => stud.lastName,
-    },
-    {
-        id: "firstName",
-        align: "left",
-        label: "First Name",
-        fieldFn: (stud) => stud.firstName,
-    },
-];
+const studentColumns = createStudentTableColumns();
+const examColumns = createExamTableColumns(props.exams);
 
-const examColumns: ExamTableColumns[] = props.exams.map((exam: Exam) => ({
-    id: exam.id,
-    align: "center",
-    label: exam.name + " (" + exam.maxPoints + " P.)",
-    fieldFn: (stud) => {
-        let score = stud.scores[exam.id];
-        if (!score) {
-            score = {
-                pointsScored: null,
-                isPostscript: false,
-            };
-        }
-        return score;
-    },
-    exam,
-}));
+function createStudentTableColumns(): StudentTableColumn[] {
+    return [
+        {
+            id: "lastName",
+            align: "left",
+            label: "Last Name",
+            fieldFn: (stud) => stud.lastName,
+        },
+        {
+            id: "firstName",
+            align: "left",
+            label: "First Name",
+            fieldFn: (stud) => stud.firstName,
+        },
+    ];
+}
+function createExamTableColumns(exams: Exam[]): ExamTableColumns[] {
+    return exams.map((exam: Exam) => ({
+        id: exam.id,
+        align: "center",
+        label: exam.name + " (" + exam.maxPoints + " P.)",
+        fieldFn: (stud) => {
+            let score = stud.scores[exam.id];
+            if (!score) {
+                score = {
+                    pointsScored: null,
+                    isPostscript: false,
+                };
+            }
+            return score;
+        },
+        exam,
+    }));
+}
 </script>
 
 <template>

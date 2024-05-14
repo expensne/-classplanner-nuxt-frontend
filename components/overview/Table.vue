@@ -7,9 +7,7 @@ const props = defineProps<{
     students: Student[];
 }>();
 
-const emit = defineEmits<{
-    studentChanged: [student: Student];
-}>();
+const emit = defineEmits<{ studentChanged: [student: Student] }>();
 
 function onStudentScoreChanged(score: Score, studentId: string, examId: string) {
     const student = props.students.find((student) => student.id === studentId);

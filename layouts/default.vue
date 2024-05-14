@@ -1,17 +1,11 @@
-<script lang="ts">
-export default {
-    data() {
-        return {
-            showDrawer: true,
-        };
-    },
-};
+<script setup lang="ts">
+const showNavDrawer = ref(false);
 </script>
 
 <template>
     <v-app>
-        <LayoutDefaultAppHeader v-model="showDrawer" />
-        <LayoutDefaultAppDrawer :show="showDrawer" />
+        <LayoutDefaultAppHeader v-model="showNavDrawer" title="Classplanner (alpha)"/>
+        <LayoutDefaultAppDrawer v-model="showNavDrawer" />
         <LayoutDefaultAppMain>
             <slot></slot>
         </LayoutDefaultAppMain>
